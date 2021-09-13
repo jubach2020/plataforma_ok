@@ -1,0 +1,70 @@
+{% block content %}    
+<!-- Main content -->
+<div id="tablaSegInc">
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+             <form action="/operaciones/analisis/seguimiento-incentivos" method="post" role="form" id="apiIncentivos">
+              <div class="card card-primary">
+                <!-- form start -->
+                 <div class="card-body">
+                    <div class="form-group">
+                     
+                        <div class="row">
+                          <div class="col-md-5">                      
+                             <label for="selectFiltro">Agrupación &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                              <select class="select"  name="selectVert" style="width: 40%;">
+                                 <option value="s">Seleccione una opción</option>
+                                 <option value="0">+</option>
+                                 {% for ver in verticales %}
+                                   <option value="{{ ver.Vertical }}">{{ ver.Vertical }}</option>
+                                 {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                      <!--</form>-->
+                    </div>                   
+                  </div>
+                  <!-- /.card-body -->  
+                  <div class="card-footer">
+                    <input  type="submit"  name="cargarInc" id='cargarInc' class="editar btn btn-outline-primary" value="Cargar datos" />
+                  </div>                
+              </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+    
+        <div class="card card-primary">
+          <!-- form start -->
+            <div class="card-body">
+              <iframe id="inlineFrameExample"
+              title="Inline Frame Example"
+              width="100%"
+              height="100%"
+              src="{{ datos }}">
+              </iframe>                   
+            </div>
+            <!-- /.card-body -->  
+            <div class="card-footer">
+          
+            </div>                
+        </div>
+   
+      </div>
+  </div>
+</div>
+</section>
+
+{% endblock content %}

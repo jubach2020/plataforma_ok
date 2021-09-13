@@ -1,0 +1,186 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="agrupForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                    <div class="row">
+                     <div class="col-md-7">                      
+                          <label for="selectAgr">Agrupación &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select class="select"  id="selectAgr" name="selectAgr" style="width: 40%;">
+                              <option value="0">Seleccione una opción</option>
+                              <option value="1">+</option>
+                              {% for agr in agrupaciones %}
+                                <option value="{{ agr.Id }}">{{ agr.Agrupacion }}</option>
+                              {% endfor %}
+                           </select>
+                      </div>
+                      <div class="col-md-5">    
+                        <div id="divAddAgr"> </div>
+                      </div>
+                    </div>                   
+                  </div>
+                </form>
+              
+                <form enctype="multipart/form-data" method="POST" action="/uploadAgrupacionArt">
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class=flashes>
+                          {% for message in messages %}
+                            <li>{{ message }}</li>
+                          {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endwith %}                     
+                      </div>
+                      <div class="col-2">
+                          <input type='file'   id ="cargarAgrupacionArt" name="cargarAgrupacionArt" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>                
+                </form>
+              <div class="col-1">
+                    <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-files-agrupacion-articulos">Descargar</a>  
+              </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row" id="div-tabla-agrupa-art">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de agrupaciones</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="table-responsive" id="mydatatable-container">
+            <!--<table id="listadoArt" class="records_list table table-striped table-bordered table-hover dataTable" style="width:auto;" role="grid">-->
+              <table id="listadoArt" class="display" style="width:100%;" role="grid">
+              <thead>
+                <tr>
+                  <th>CN</th>               
+                  <th>Descripción</th>
+                  <th>Cod. Lab</th>  
+                  <th>Cod. Flia BI</th>
+                  <th>Descripción Familia</th> 
+                  <th>C1</th>
+                  <th>C2</th>  
+                  <th>C3</th>
+                  <th>C4</th>            
+                  <th>Sel. Todos<br/>
+                    <div class="form-check form-switch">
+                      <input type="checkbox" id="select_all" class="form-check-input" />
+                    </div>
+                  </th>      
+                  </tr>
+                </thead>
+              <tfoot>
+                <tr>
+                  <th id="cnFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th id="labFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>                            
+                  <th id="sinFiltro"></th>  
+                </tr>
+                </tfoot>
+              <tbody>
+              {% autoescape false %}
+              {% for row in artAgrup:  %}
+              <tr id="{{ row[0] }}">
+                <td id="agrupCnn{{ row[0] }}" >{{ row[0] }}</td>
+                <td id="agrupDesc{{ row[0] }}">{{ row[1] }}</td>
+                <td id="agrupCodLab{{ row[0] }}">{{ row[2] }}</td>
+                <td id="agrupFliaBi{{ row[0] }}">{{ row[3] }}</td>
+                <td id="agrupDescFlia{{ row[0] }}">{{ row[4] }}</td>
+                <td id="agrupDescFlia{{ row[0] }}">{{ row[5] }}</td>
+                <td id="agrupC2{{ row[0] }}">{{ row[6] }}</td>
+                <td id="agrupC3{{ row[0] }}">{{ row[7] }}</td>
+                <td id="agrupC4{{ row[0] }}">{{ row[8] }}</td>
+                <!--<td ><div class="divAgregar">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked" id="{{ row[0] }}"/>
+                          <label class="form-check-label" for="flexSwitchCheckChecked">Agregar</label>
+                        </div>
+                  </div>
+                </td>-->
+                <td id="agrupAg{{ row[0] }}">{{ row[10] }}</td>
+               </tr>
+              {% endfor %}
+              {% endautoescape %}
+              </tbody>              
+            </table>  
+            </div>          
+            <div class="card-footer">
+                <input type='button' id ="unir" name="unirArtAgr" class="btn btn-outline-primary float-right d-none d-sm-inline-block" value='Unir los seleccionado'/> 
+                <br/>
+                <div id="mensajeAgrupados">
+                  {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}  
+                </div>
+                <!--modal de mensaje de error-->
+                <div class="modal fade" id="mensajeError" role="dialog"  aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">          
+                              <div class="modal-header">
+                                  <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>-->
+                              </div>
+                              <div class="modal-body">
+                                  <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                      <strong>Debe seleccionar una agrupación</strong>
+                                      <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                          <span aria-hidden='true'>&times;</span>
+                                      </button>
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-default cerrarModal" data-dismiss="modal">Cerrar</button>
+                              </div>           
+                      </div>
+                  </div>
+              </div>
+                <!-- fin de modal-->
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

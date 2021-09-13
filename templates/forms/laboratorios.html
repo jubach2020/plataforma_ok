@@ -1,0 +1,167 @@
+{% block content %}    
+<!-- Main content -->
+
+<section class="content">  
+<form action="/operaciones/mantenimientos/laboratorios-verticales/agregarLabVertical" method="post" role="form" id="form-agregarLabVert">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Filtros Verticales</h3>
+                </div>
+                <div class="card-body">
+                    
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-7">                      
+                                    <label for="selectVert">Verticales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <select class="select"  id="selectVert" name="selectVert" style="width: 40%;">
+                                            <option value="0">Seleccione una opción</option>                                        
+                                            {% for ver in verticales %}
+                                                <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>                
+                            </div>
+                        </div>  
+                    </form>                 
+                </div>
+                <div class="card-footer">               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">  
+                <div class="card-header">
+                    <h3 class="card-title">Listado Laboratorios</h3>
+                </div>         
+                <div class="card-body">
+                    
+                        <div class="table-responsive" id="vademecun-container">
+                            <table id="" class="display"  style="width:auto;" role="grid">
+                                         <thead>
+                                                <tr>
+                                                     <th>Código</th>
+                                                     <th>Tipo</th>               
+                                                     <th>Nombre</th>                                                                
+                                                     <th>Dir.</th>  
+                                                     <th>Ciudad</th>  
+                                                     <th>Prov.</th>
+                                                     <th>CP</th>   
+                                                     <th>TEL</th>                                                                     
+                                                     <th>Agregar</th>
+                                                </tr>
+                                        </thead>
+                                        <tfoot>
+                                                <tr>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                                           
+                                                    <th id="sinfiltroVerLab"></th> 
+                                                </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for row in labs:  %}
+                                            <tr id="{{ row[0] }}">
+                                                <td id="codigo{{ row[0] }}" >{{ row[0] }}</td>
+                                                <td id="tipo{{ row[0] }}"> {{ row[1] }}</td>
+                                                <td id="nom{{ row[0] }}">{{ row[2] }}</td>
+                                                <td id="dir{{ row[0] }}">{{ row[3] }}</td>
+                                                <td id="ciud{{ row[0] }}">{{ row[4] }}</td>
+                                                <td id="prov{{ row[0] }}">{{ row[5] }}</td>
+                                                <td id="cp{{ row[0] }}">{{ row[6] }}</td>
+                                                <td id="tel{{ row[0] }}">{{ row[7] }}</td>
+                                             
+                                                <td> 
+                                                   <div class="divEditarLabVert">   
+                                                    <input type='hidden' name='agregarValue' value="{{ row[0] }}" />                                              
+                                                    <input type='button' name='agregarLabModal' id='agregarLabModal{{ row[0] }}'  class='btn btn-outline-primary' value='Agregar' /> 
+                                                    <br/>
+                                                    <div  id='mensajeCodigo{{ row[0] }}' ><p></p></div>
+                                                    
+                                                    <div id="agregarLabVertModal{{ row[0] }}" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-lg">
+                                                         <div class="modal-content">
+                                                              <div class="modal-header">
+                                                              <h4 class="modal-title">Ingresar datos</h4>
+                                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                              </div>
+                                                            <div>
+                                                              <table id="datosLaboratorio" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th style="width:32%">Código</th>
+                                                                    <th style="width:32%">Nombre</th>                                                                
+                                                                    <th style="width:32%">Color &nbsp; &nbsp;&nbsp;&nbsp;</th>                                                                     
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <td><input type="text"  size="15" class="form-control"   id="codigo{{ row[0] }}"         name="codigoModal"      style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();"           value="{{ row[0] }}"/></td>
+                                                                    <td><input type="text"  size="18" class="form-control"   id="nomb{{ row[0] }}"           name="nomModal"         style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();"           value="{{ row[2] }}"/></td>
+                                                                    <td><input type="color" size="18" class="form-control"   id="color{{ row[0] }}"          name="colorModal"   /></td>
+                                                                    <!--data-color-format="hex"-->
+                                                                   </tr>
+                                                                </tbody>  
+                                                              </table>
+                                                            </div>
+                                                           <div class="modal-footer">
+                                                               <input  type="hidden" name="hiddenClose" value="{{ row[0] }}" />
+                                                               <input  type="button" name="botonClose" class="btn btn-default" data-dismiss="modal" value="Close" />
+                                                               <input  type="submit" name="agregarLabVert" id='{{ row[0] }}' class="editar btn btn-primary"/>
+                                                            </div>
+                                                          </div><!-- /.modal-content -->
+                                                        </div><!-- /.modal-dialog -->
+                                                      </div><!-- /.modal -->
+
+                                                      <!--modal de mensaje de error-->
+                                                      <div class="modal fade" id="mensaje{{ row[0] }}" role="dialog"  aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">          
+                                                                    <div class="modal-header">
+                                                                       
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                                                            <strong>El Laboratorio ya existe</strong>
+                                                                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                                                                <span aria-hidden='true'>&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    </div>           
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                      <!-- fin de modal-->
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>              
+                              </table>  
+                            </div>                        
+                    </div>            
+                </div>
+                <div class="card-footer"> 
+                     
+                </div>
+            </div>
+        </div>
+    </div>  
+</form>    
+</section>
+{% endblock content %}
+    

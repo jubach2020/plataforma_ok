@@ -1,0 +1,238 @@
+{% block content %}    
+<!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="/operaciones/mantenimientos/farmacias-verticales/agregarVertical" method="post" role="form" id="nuevafarVert">
+                  <div class="card-body">
+                    <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-7">                      
+                            <label for="selectVert">Verticales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                              <select class="select"  id="selectVert" name="selectVert" style="width: 40%;">
+                                <option value="0">Seleccione una opción</option>
+                                <!--<option value="1">+</option>-->
+                                {% for ver in verticales %}
+                                  <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                      <div class="col-md-5">    
+                          <div id="divAddVert">
+                            <div class="row">
+                              <div class="col-md-5">&nbsp;</div>
+                              <div class="col-md-4">
+                                <input  type="button" name="addFarButton" id="addFarButton" class="btn btn-secondary float-right d-none d-sm-inline-block" value="Nueva Farmacia" data-toggle="modal" data-target="#nuevaFarModal"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+                      </div>                        
+                        <div id="nuevaFarModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog modal-lg">
+                         
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Ingresar datos</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                              <div>
+                                <table id="datosFarmacia" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                                  <thead>
+                                    <tr>
+                                      <th>Nif</th>               
+                                      <th>Descripción</th>
+                                      <th>Activo</th>  
+                                      <th>Verticales</th>  
+                                      <th>Proveedores</th>
+                                      <th>Nombre</th>  
+                                      <th>Mayorista</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td><input type="text" size="16"  class="form-control"  id="nif"     name="nif"          value=""/></td>
+                                      <td><input type="text" size="30"  class="form-control"  id="desc"    name="desc"         value=""/></td>
+                                      <td><input type="text" size="3"   class="form-control"  id="activo"  name="activo"       value=""/></td>
+                                      <td><input type="text" size="10"  class="form-control"  id="vert"    name="vert"         value=""/></td>
+                                      <td><input type="text" size="4"   class="form-control"  id="prov"    name="prov"         value=""/></td>
+                                      <td><input type="text" size="8"   class="form-control"  id="nom"     name="nom"          value=""/></td>
+                                      <td><input type="text" size="5"   class="form-control"  id="may"     name="may"          value=""/></td>
+                                    </tr>
+                                  </tbody>  
+                                </table>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <input type="submit" name="nuevaFar" id="nuevaFar"  class="btn btn-primary" value="Enviar"/>
+                              </div>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                      </div>                 
+                </form>  
+              <div class="card-footer">          
+              <form enctype="multipart/form-data" method="POST" action="/uploadFarmaciasVert">
+                <div class="row">
+                  <div class="col-8" id="mensajeUpload">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class=flashes>
+                      {% for message in messages %}
+                        <li>{{ message }}</li>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}                     
+                  </div>    
+                  <div class="col-2">
+                      <input type='file'   id ="cargarFarmaciasVert" name="cargarFarmaciasVert" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                  </div>
+                  <div class="col-1">
+                      <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                  </div>
+                  <div class="col-1">
+                    <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-farm-verticales">Descargar</a>  
+                </div> 
+                  </div>                        
+              </form>
+            
+          </div>
+        </div>
+        </div>
+</section>
+  
+<!-- Main content -->
+<form action="/operaciones/mantenimientos/farmacias-verticales/editarFarmacia" method="post" role="form" id="editarFarVert">
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de Farmacias Verticales</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="table-responsive" id="listadoFarmacias-container">
+            <table id="listadoFarmacias" class="records_list table table-striped table-bordered table-hover dataTable"  style="width:auto;" role="grid">
+        
+             <thead>
+              <tr>
+                <th>Nif</th>               
+                <th>Descripción</th>
+                <th>Activo</th>  
+                <th>Verticales</th>  
+                <th>Proveedores</th>
+                <th>Nombre</th>  
+                <th>Mayorista</th>
+                         
+                <th>Editar</th>
+                <th>Borrar</th>
+
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th id="nifFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                                             
+                  <th id="sinFiltroFarm" colspan="2">&nbsp;</th>  
+                </tr>
+                </tfoot>
+              <tbody>
+              {% for row in farmacias:  %}
+              <tr id="{{ row[0] }}">
+                <td id="farmNif{{ row[0] }}" ><!--<input type="text" size="8"  class="form-control"        id="agrupCnn{{ row[0] }}"       name="agrupCnn{{ row[0] }}"       value="{{ row[0] }}">-->{{ row[1] }}</td>
+                <td id="farmDesc{{ row[0] }}"><!--<input type="text" size="30" class="form-control"  id="agrupDesc{{ row[0] }}"      name="agrupDesc{{ row[0] }}"           value="{{ row[1] }}">--> {{ row[2] }}</td>
+                <td id="activoFarm{{ row[0] }}">{{ row[3] }}</td>
+                <td id="vertFram{{ row[0] }}"><!--<input type="text" size="6"  class="form-control"  id="agrupFliaBi{{ row[0] }}"    name="agrupFliaBi{{ row[0] }}"      value="{{ row[4] }}">-->{{ row[4] }}</td>
+                <td id="provFram{{ row[0] }}"><!--<input type="text" size="6"  class="form-control"  id="agrupFliaBi{{ row[0] }}"    name="agrupFliaBi{{ row[0] }}"      value="{{ row[5] }}">-->{{ row[5] }}</td>
+                <td id="nomFarm{{ row[0] }}"><!--<input type="text" size="6"  class="form-control"  id="agrupDescFlia{{ row[0] }}"  name="agrupDescFlia{{ row[0] }}"  value="{{ row[6] }}">-->{{ row[6] }}</td>
+                <td id="majFarm{{ row[0] }}"><!--<input type="text" size="10" class="form-control"  id="agrupC1{{ row[0] }}"        name="agrupC1{{ row[0] }}"        value="{{ row[7] }}">-->{{ row[7] }}</td>
+                <td id="editarFar">
+                  <div class="divEditarFar">
+                    <input type='button' name='editarModal'   class='btn btn-outline-primary' value='Editar' data-toggle="modal" data-target="#editarFarModal{{ row[0] }}"/> 
+                  <br/><div  id='edicionMsgFar{{ row[0] }}' ><p>&nbsp;</p></div>
+                </div>
+                
+                <div id="editarFarModal{{ row[0] }}" class="modal fade" role="dialog">
+                  <div class="modal-dialog modal-lg">
+                   <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Editar datos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                      <div>
+                        <table id="datosFarmacia" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                          <thead>
+                            <tr>
+                              <th>Nif</th>               
+                              <th>Descripción</th>
+                              <th>Activo</th>  
+                              <th>Verticales</th>  
+                              <th>Proveedores</th>
+                              <th>Nombre</th>  
+                              <th>Mayorista</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><input type="text" size="16" class="form-control"   id="nif{{ row[0] }}"     name="farmNif{{ row[0] }}"          value="{{ row[1] }}" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();" /></td>
+                              <td><input type="text" size="30" class="form-control"   id="desc{{ row[0] }}"    name="farmDesc{{ row[0] }}"         value="{{ row[2] }}" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();" /></td>
+                              <td><input type="text" size="3"  class="form-control"   id="activo{{ row[0] }}"  name="activoFarm{{ row[0] }}"       value="{{ row[3] }}"></td>
+                              <td><input type="text" size="10" class="form-control"   id="vert{{ row[0] }}"    name="vertFram{{ row[0] }}"         value="{{ row[4] }}" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();" /></td>
+                              <td><input type="text" size="4"  class="form-control"   id="prov{{ row[0] }}"    name="provFram{{ row[0] }}"         value="{{ row[5] }}"></td>
+                              <td><input type="text" size="8"  class="form-control"   id="nom{{ row[0] }}"     name="nomFarm{{ row[0] }}"          value="{{ row[6] }}"></td>
+                              <td><input type="text" size="5"  class="form-control"   id="may{{ row[0] }}"     name="majFarm{{ row[0] }}"          value="{{ row[7] }}"></td>
+                            </tr>
+                          </tbody>  
+                        </table>
+                      </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <input type="submit" name="editarFar" id='{{ row[0] }}' class="editar btn btn-primary"/>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                
+                </td>
+                <td id="borrarFar">
+                  <div class="divBorrarFar">
+                    <input type='button' name='borrarFar' id='{{ row[0] }}'  class='btn btn-outline-danger' value='Borrar'/> 
+                  <br/><div  id='edicionMsgFar{{ row[0] }}' ><p>&nbsp;</p></div>
+                </div>
+                </td>
+               </tr>
+              {% endfor %}
+              </tbody>              
+            </table>  
+            </div>          
+            <div class="card-footer">
+               
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+</form>
+
+{% endblock content %}

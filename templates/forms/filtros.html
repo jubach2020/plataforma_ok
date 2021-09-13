@@ -1,0 +1,87 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="filForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="filtroNom">Nombre del Filtro</label>
+                      <input type="text" class="form-control" id="filtroNom" name="filtroNom" placeholder="Nombre Filtro">
+                    </div>                   
+                  </div>
+                  <!-- /.card-body -->  
+                  <div class="card-footer">
+                    <button type="submit" id="crearFil" class="btn btn-primary float-right d-none d-sm-inline-block">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de Filtros</h3>
+          </div>
+          <!-- /.card-header -->
+          <form action="" method="post" role="form" id="filFormlista"></form>
+          <div class="card-body">
+            <table id="listadoFil" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Nombre</th>               
+                <th>Editar</th>
+                <th>Eliminar</th>           
+              </tr>
+              </thead>
+              <tbody>
+              {% for fil in filtros %}
+              <tr>
+                <td><input type="text" class="form-control" id="filt{{ fil.id }}" name="filt{{ fil.id }}" placeholder="Nombre" value="{{ fil.filtro }}"></td>
+              
+                <td>
+                  <div class="divEditarUsuario">
+                    <input type='button' name='editarFiltro' id='{{ fil.id }}'  class='btn btn-outline-primary' value='Editar'/> 
+                    <br/><div  id='edicionMsgAgr{{ fil.Id }}' ><p></p></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="divBorrarUsuario">
+                    <input type='button' name='borrarFiltro' id='{{ fil.id }}'  class='btn btn-outline-danger' value='Eliminar'/> 
+                  </div>
+              </td>                
+              </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+              <tr>
+                <th>Nombre</th>
+                <th>Editar</th>
+                <th>Eliminar</th> 
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </form>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

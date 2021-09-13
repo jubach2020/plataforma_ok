@@ -1,0 +1,128 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="agrupForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-6">
+                          <label for="agrupNom">Nombre de la Agrupación</label>
+                          <input type="text" class="form-control" id="agrupNom" name="agrupNom" placeholder="Nombre agrupación">
+                        </div>
+                        <div class="col-6">
+                          <label for="agrupNom">Seleccione un color</label>
+                          <input id="color" type="color" name="colorAgrup" class="form-control" value="#0091ff" style="width:40%" />
+                            <!--<input id="color" type="text" name="colorAgrup" class="form-control" value="#0091ff" data-color-format="hex">-->
+                      
+                        </div>                                       
+                  </div>
+                  <!-- /.card-body -->  
+                  <div class="card-footer">
+                    <button type="submit" id="crearAgrup" class="btn btn-primary float-right d-none d-sm-inline-block">Crear</button>
+                  </div>
+                </form>
+                <form enctype="multipart/form-data" method="POST" action="/uploadAgrupaciones">
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class=flashes>
+                          {% for message in messages %}
+                            <li>{{ message }}</li>
+                          {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endwith %}                     
+                      </div>
+                      <div class="col-2">
+                          <input type='file'   id ="cargarAgrupaciones" name="cargarAgrupaciones" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>
+                     
+                     
+                    </form>
+                      <div class="col-1">
+                        <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-files">Descargar</a>  
+                    </div>
+                   </div>
+               
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de agrupaciones</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="listadoAgr" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Color</th>               
+                <th>Editar</th>
+                <th>Eliminar</th>           
+              </tr>
+              </thead>
+              <tbody>
+              {% for agr in agrupaciones %}
+              <tr>
+                <td><input type="text" class="form-control" id="agrup{{ agr.Id }}" name="agrup{{ agr.Id }}" placeholder="Nombre" value="{{ agr.Agrupacion }}"></td>
+                <td>
+                  
+                  <!--<input type="text" class="form-control" id="color{{ agr.Id }}" name="colorAgr" data-color-format="hex" value="{{ agr.color }}">-->
+                  <input type="color" class="form-control" id="color{{ agr.Id }}" name="colorAgr"  value="{{ agr.color }}">
+                <td>
+                  <div class="divEditarUsuario">
+                    <!--<input type='hidden' id='editarAgr'  class='btn btn-outline-danger' value='{{ agr.Id }}'/> -->
+                    <input type='button' name='editarAgrup' id='{{ agr.Id }}'  class='btn btn-outline-primary' value='Editar'/> 
+                    <br/><div  id='edicionMsgAgr{{ agr.Id }}' ><p></p></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="divBorrarUsuario">
+                   <!-- <input type='hidden' id='eliminarAgr'  class='btn btn-outline-danger' value='{{ agr.Id }}'/> -->
+                    <input type='button' name='borrarAgrup' id='{{ agr.Id }}'  class='btn btn-outline-danger' value='Eliminar'/> 
+                  </div>
+              </td>                
+              </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+              <tr>
+                <th>Nombre</th>
+                <th>color</th>
+                <th>Editar</th>
+                <th>Eliminar</th> 
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

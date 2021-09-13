@@ -1,0 +1,412 @@
+{% block content %}    
+<!-- Main content -->
+
+<section class="content">
+
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Filtros Verticales</h3>
+                </div>
+                <div class="card-body">
+                    
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-7">                      
+                                  <label for="selectVert">Verticales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                  <select class="select"  id="selectVert" name="selectVert" style="width: 40%;">
+                                    <option value="0">Seleccione una opción</option>
+                                    <!--<option value="1">+</option>-->
+                                    {% for ver in verticales %}
+                                      <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>                
+                            </div>
+                        </div>  
+                    </form>                 
+                </div>
+                <div class="card-footer">   
+                  <form enctype="multipart/form-data" method="POST" action="/uploadArtVert">
+                    <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class=flashes>
+                          {% for message in messages %}
+                            <li>{{ message }}</li>
+                          {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endwith %}                     
+                      </div>    
+                      <div class="col-2">
+                          <input type='file'   id ="cargarArtVert" name="cargarArtVert" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>
+                      <div class="col-1">
+                        <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-art-verticales">Descargar</a>  
+                    </div> 
+                      </div>                        
+                  </form>            
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado de Artículos Verticales</h3>
+            </div>
+          <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/operaciones/mantenimientos/articulos-verticales/editarArtVert" method="post" role="form" id="form-artVert">
+                    <div  id="listadoArts-container">
+                        <table id="" class="display"  style="width:auto;" role="grid">
+                            <thead>
+                                <tr>
+                                <th>CN6</th>               
+                                <th>EAN</th>
+                                <th>Vertical</th>
+                                <th>Producto</th>  
+                                <th>Stock<br/>Min.</th>  
+                                <th>Stock<br/>Max.</th>
+                                <th>Multiplo</th>  
+                                <th>Activo</th>
+                                <th>S/AH</th>
+                                <th>S/FEDE</th>
+                                <th>IVA</th> 
+                                <th>Editar</th>
+                                <th>Borrar</th>       
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>                                  
+                                  <!--<select class="select"  id="selectVert" name="verticales" style="width: 80%;">'
+                                    {% for ver in verticales %}                   
+                                        <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>                     
+                                    {% endfor %}
+                                 </select>
+                                 <input type='hidden' id='valSelectHidden'/>-->
+                                </th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>
+                                <th>Filtro..</th>                               
+                                <th id="sinFiltroVert" colspan="2">&nbsp;</th>   
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for row in artVertical:  %}
+                            <tr id="{{ row[0] }}">
+                                <td id="cn6{{ row[0] }}" >{{ row[1] }}</td>
+                                <td id="ean{{ row[0] }}">{{ row[2] }}</td>
+                                <td id="vert{{ row[0] }}">{{ row[11] }}</td>
+                                <td id="prod{{ row[0] }}">{{ row[3] }}</td>
+                                <td id="stockmin{{ row[0] }}">{{ row[4] }}</td>
+                                <td id="stockmax{{ row[0] }}">{{ row[5] }}</td>                                
+                                <td id="mul{{ row[0] }}">{{ row[6] }}</td>
+                                <td id="activo{{ row[0] }}">{{ row[7] }}</td>
+                                <td id="sinah{{ row[0] }}">{{ row[8] }}</td>
+                                <td id="sinfede{{ row[0] }}">{{ row[9] }}</td>
+                                <td id="iva{{ row[0] }}">{{ row[10] }}</td>
+                               
+                                <td id="tdEditarArtVer">
+                                    <div class="divEditarArtVer">
+                                      <input type='button' name='tdEditarArtVert'   class='btn btn-outline-primary' value='Editar' data-toggle="modal" data-target="#editarArtVertModal{{ row[0] }}"/> 
+                                    </div>                                                                      
+                                    <div id="editarArtVertModal{{ row[0] }}" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">Editar datos</h4>
+                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                          </div>
+                                        <div>
+                                          <table id="datosArticulosVert" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                                            <thead>
+                                              <tr>
+                                                <th>CN6</th>               
+                                                <th>EAN</th>                                              
+                                                <th>Producto</th>  
+                                                <th>Stock<br/>Min.</th>  
+                                                <th>Stock<br/>Max.</th>
+                                                <th>Mult.</th>  
+                                                <th>Act.</th>
+                                                <th>S/AH&nbsp;</th>
+                                                <th>S/FEDE</th>
+                                                <th>IVA&nbsp;</th>        
+                                                <th>Vertical</th>                                      
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                <td><input type="text" size="20" class="form-control"   id="cn6-{{ row[0] }}"     name="Artcn6{{ row[0] }}"        value="{{ row[1] }}" /></td>
+                                                <td><input type="text" size="8"  class="form-control"   id="ean-{{ row[0] }}"     name="Artean{{ row[0] }}"        value="{{ row[2] }}" /></td>
+                                                <td><input type="text" size="3"  class="form-control"   id="prod-{{ row[0] }}"    name="Artprod{{ row[0] }}"       value="{{ row[3] }}" /></td>
+                                                <td><input type="text" size="10" class="form-control"   id="min-{{ row[0] }}"     name="Artmin{{ row[0] }}"        value="{{ row[4] }}" /></td>
+                                                <td><input type="text" size="4"  class="form-control"   id="max-{{ row[0] }}"     name="Artmax{{ row[0] }}"        value="{{ row[5] }}" /></td>
+                                                <td><input type="text" size="5"  class="form-control"   id="mult-{{ row[0] }}"    name="Artmult{{ row[0] }}"       value="{{ row[6] }}" /></td>
+                                                <td><input type="text" size="5"  class="form-control"   id="act-{{ row[0] }}"     name="Artact{{ row[0] }}"        value="{{ row[7] }}" /></td>
+                                                <td><input type="text" size="5"  class="form-control"   id="ah-{{ row[0] }}"      name="Artah{{ row[0] }}"         value="{{ row[8] }}" /></td>
+                                                <td><input type="text" size="5"  class="form-control"   id="fede-{{ row[0] }}"    name="Artfede{{ row[0] }}"       value="{{ row[9] }}" /></td>
+                                                <td><input type="text" size="10" class="form-control"   id="iva-{{ row[0] }}"     name="Artiva{{ row[0] }}"        value="{{ row[10] }}" /></td>
+                                                <td>
+                                                  <select class="select"  name="Artvert{{ row[0] }}" style="width: 60%;">
+                                                    {% for ver in verticales %}
+                                                      {% if (ver.Vertical==row[11]): %}
+                                                        <option value="{{  ver.Vertical }}" selected>{{ ver.Vertical }}</option>
+                                                      {% else: %}
+                                                        <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>
+                                                      {% endif %}
+                                                    {% endfor %}
+                                                  </select>
+                                                  <!--<input type="text" size="5"  class="form-control"   id="vert-{{ row[0] }}"    name="Artvert{{ row[0] }}"       value="{{ row[11] }}"/>-->
+                                                </td>
+                                            </tr>
+                                            </tbody>  
+                                          </table>
+                                        </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                          <input type="hidden"  name="idEditar" value='{{ row[0] }}'/>
+                                          <input type="submit" name="editarArtVer" id='editarArtVer{{ row[0] }}' class="editar btn btn-primary"/>
+                                        </div>
+                                      </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                  </div><!-- /.modal -->                                  
+                                  </td>
+                                  <td id="borrarFar">
+                                    <div class="divBorrarFar">
+                                      <input type='button' name='borrarArtVer' id='{{ row[0] }}'  class='btn btn-outline-danger' value='Borrar'/> 
+                                    </div>
+                                  </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>              
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+        
+    </div>
+  </div>
+</div>
+<form action="/operaciones/mantenimientos/articulos-verticales/agregarArtVertical" method="post" role="form" id="form-agregarArtVert">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Filtros Verticales</h3>
+                </div>
+                <div class="card-body">
+                    
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-7">                      
+                                    <label for="selectVert">Verticales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <select class="select"  name="selectVertArt" style="width: 40%;">
+                                            <option value="0">Seleccione una opción</option>                                        
+                                            {% for ver in verticales %}
+                                                <option value="{{  ver.Vertical }}">{{ ver.Vertical }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>                
+                            </div>
+                        </div>  
+                    </form>                 
+                </div>
+                <div class="card-footer">               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">  
+                <div class="card-header">
+                    <h3 class="card-title">Listado Vademecum</h3>
+                </div>         
+                <div class="card-body">
+                    
+                        <div class="table-responsive" id="vademecun-container">
+                            <table id="" class="display"  style="width:auto;" role="grid">
+                                         <thead>
+                                                <tr>
+                                                    <th>CN</th>               
+                                                    <th>Descripción</th>
+                                                    <th>Cod. Lab</th>  
+                                                    <th>Laboratorio</th>
+                                                    <th>Cod. Flia BI</th>
+                                                    <th>Descripción Familia</th> 
+                                                    <th>C1</th>
+                                                    <th>C2</th>  
+                                                    <th>C3</th>
+                                                    <th>C4</th>            
+                                                    <th>Agregar</th>
+                                                </tr>
+                                        </thead>
+                                        <tfoot>
+                                                <tr>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>
+                                                    <th>Filtro..</th>                            
+                                                    <th id="sinfiltroVer"></th> 
+                                                </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for row in vademe:  %}
+                                            <tr id="{{ row[0] }}">
+                                                <td id="cn-vade{{ row[0] }}" >{{ row[0] }}</td>
+                                                <td id="desc{{ row[0] }}"> {{ row[1] }}</td>
+                                                <td id="codlab{{ row[0] }}">{{ row[2] }}</td>
+                                                <td id="nomlab{{ row[0] }}">{{ row[3] }}</td>
+                                                <td id="codflia{{ row[0] }}">{{ row[4] }}</td>
+                                                <td id="descFlia{{ row[0] }}">{{ row[5] }}</td>
+                                                <td id="C1{{ row[0] }}">{{ row[6] }}</td>
+                                                <td id="C2{{ row[0] }}">{{ row[7] }}</td>
+                                                <td id="C3{{ row[0] }}">{{ row[8] }}</td>
+                                                <td id="C4{{ row[0] }}">{{ row[9] }}</td>
+                                                <td> 
+                                                   <div class="divEditarArtVert">   
+                                                    <input type='hidden' name='agregarValue' value="{{ row[0] }}" />                                              
+                                                    <input type='button' name='agregarVertModal' id='agregarVertModal{{ row[0] }}'  class='btn btn-outline-primary' value='Agregar' /> 
+                                                    <br/>
+                                                    <div  id='mensajeCN{{ row[0] }}' ><p></p></div>
+                                                    
+                                                    <div id="agregarArtVert{{ row[0] }}" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-lg">
+                                                         <div class="modal-content">
+                                                              <div class="modal-header">
+                                                              <h4 class="modal-title">Ingresar datos</h4>
+                                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                              </div>
+                                                            <div>
+                                                              <table id="datosFarmacia" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th>CN</th>
+                                                                    <th>EAN</th>               
+                                                                    <th>Prod.</th>                                                                
+                                                                    <th>Stock<br/>Min</th>  
+                                                                    <th>Stock<br/>Max</th>  
+                                                                    <th>Mult.</th>
+                                                                    <th>Activo</th>  
+                                                                    <th>S/AH</th>
+                                                                    <th>S/FED</th>
+                                                                    <th> IVA </th>
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <td><input type="text" size="15" class="form-control"   id="vademecum-cn{{ row[0] }}"         name="cn"            value="{{ row[0] }}"/></td>
+                                                                    <td><input type="text" size="15" class="form-control"   id="ean{{ row[0] }}"        name="ean"            /></td>
+                                                                    <td><input type="text" size="18" class="form-control"   id="prod{{ row[0] }}"       name="prod"           /></td>
+                                                                    <td><input type="text" size="3"  class="form-control"   id="max{{ row[0] }}"        name="max"            /></td>
+                                                                    <td><input type="text" size="3"  class="form-control"   id="min{{ row[0] }}"        name="min"            /></td>
+                                                                    <td><input type="text" size="3"  class="form-control"   id="mult{{ row[0] }}"       name="mult"           /></td>
+                                                                    <td><input type="text" size="3"  class="form-control"   id="act{{ row[0] }}"        name="act"            /></td>
+                                                                    <td><input type="text" size="6"  class="form-control"   id="ah{{ row[0] }}"         name="ah"             /></td>
+                                                                    <td><input type="text" size="6"  class="form-control"   id="fede{{ row[0] }}"       name="fede"           /></td>
+                                                                    <td><input type="text" size="6"  class="form-control"   id="iva{{ row[0] }}"        name="iva"            /></td>  
+                                                                   </tr>
+                                                                </tbody>  
+                                                              </table>
+                                                            </div>
+                                                           <div class="modal-footer">
+                                                               <input  type="hidden" name="hiddenClose" value="{{ row[0] }}" />
+                                                               <input  type="button" name="botonClose" class="btn btn-default" data-dismiss="modal" value="Close" />
+                                                               <input  type="submit" name="agregarArtVert" id='{{ row[0] }}' class="editar btn btn-primary"/>
+                                                            </div>
+                                                          </div><!-- /.modal-content -->
+                                                        </div><!-- /.modal-dialog -->
+                                                      </div><!-- /.modal -->
+                                                      <div class="modal fade" id="mensajeVertical{{ row[0] }}" role="dialog"  aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">          
+                                                                    <div class="modal-header">
+                                                                        
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                                                            <strong>Debe seleccionar un Vertical</strong>                                                                          
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" name="cerrarModal2"  class="btn btn-secondary">Cerrar</button>
+                                                                    </div>           
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                      <!--modal de mensaje de error-->
+                                                      <div class="modal fade" id="mensaje{{ row[0] }}" role="dialog"  aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">          
+                                                                    <div class="modal-header">
+                                                                      
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                                                            <strong>El artículo ya existe</strong>
+                                                                           
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" name="cerrarModal1" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    </div>           
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                   
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>              
+                              </table>  
+                            </div>
+
+                                                   
+                    </div>            
+                </div>
+                <div class="card-footer"> 
+                     
+                </div>
+            </div>
+        </div>
+    </div>  
+   
+      <!-- fin de modal-->
+</form>    
+</section>
+{% endblock content %}

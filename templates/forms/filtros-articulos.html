@@ -1,0 +1,165 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="filArtForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                    <div class="row">
+                     <div class="col-md-5">                      
+                          <label for="selectFiltro">Filtro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select class="select"  id="selectFiltro" name="selectFiltro" style="width: 40%;">
+                              <option value="s">Seleccione una opción</option>
+                              <option value="0">+</option>
+                              {% for fil in filtros %}
+                                <option value="{{ fil.id }}">{{ fil.filtro }}</option>
+                              {% endfor %}
+                           </select>
+                      </div>
+                      
+                      <div class="col-md-2">    
+                        <ul>                      
+                          <li> <a class="link-info" href="/download-listado-lab">Listado Laboratorios</a> </li> 
+                        </ul> 
+                      </div>
+                      <div class="col-md-5">    
+                        <div id="divAddAgr"> </div>
+                      </div>
+                    </div>                   
+                  </div>
+                </div>
+                </form>
+              
+                <form enctype="multipart/form-data" method="POST" action="/uploadFiltrosArt">
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class=flashes>
+                          {% for message in messages %}
+                            <li>{{ message }}</li>
+                          {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endwith %}                     
+                      </div>    
+                      <div class="col-2">
+                          <input type='file'   id ="cargarFiltrosArt" name="cargarFiltrosArt" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>                
+              </form>
+                    <div class="col-1">
+                        <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-files-filtros-art">Descargar</a>  
+                    </div> 
+              </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row" id="div-tabla-filtros-art">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de artículos</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="table-responsive" id="mydatatable-container">
+          
+              <table id="listadoArtFil" class="display" style="width:auto;" role="grid">
+              <thead>
+                <tr>
+                  <th>CN</th>               
+                  <th>Descripción</th>
+                  <th>Cod. Lab</th>  
+                  <th>Cod. Flia BI</th>
+                  <th>Descripción Familia</th> 
+                  <th>C1</th>
+                  <th>C2</th>  
+                  <th>C3</th>
+                  <th>C4</th>            
+                  <th>Sel. Todos<br/>
+                    <div class="form-check form-switch">
+                      <input type="checkbox" id="select_all" class="form-check-input" />
+                    </div>
+                  </th>  
+                  </tr>
+                </thead>
+              <tfoot>
+                <tr>
+                  <th id="cnFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th id="labFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>                            
+                  <th id="sinFiltro">&nbsp;</th>  
+                </tr>
+                </tfoot>
+              <tbody>
+              {% autoescape false %}
+              {% for row in filArticulos:  %}
+              <tr id="{{ row[0] }}">
+                <td id="filCnn{{ row[0] }}" >{{ row[0] }}</td>
+                <td id="filDesc{{ row[0] }}">{{ row[1] }}</td>
+                <td id="filCodLab{{ row[0] }}">{{ row[2] }}</td>
+                <td id="filFliaBi{{ row[0] }}">  {{ row[3] }}</td>
+                <td id="filDescFlia{{ row[0] }}">{{ row[4] }}</td>
+                <td id="filDescFlia{{ row[0] }}">{{ row[5] }}</td>
+                <td id="filC2{{ row[0] }}">{{ row[6] }}</td>
+                <td id="filC3{{ row[0] }}">{{ row[7] }}</td>
+                <td id="filC4{{ row[0] }}">{{ row[8] }}</td>
+                <!--<td ><div class="divAgregar"> <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked" id="{{ row[0] }}"/>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Agregar</label>
+                      </div>
+                  </div>
+                </td>-->
+                <td id="fil{{ row[0] }}">{{ row[10] }}</td>
+               </tr>
+              {% endfor %}
+              {% endautoescape %}
+              </tbody>              
+            </table>  
+            </div>          
+            <div class="card-footer">
+                <input type='button' id ="unir" name="unirArtFiltro" class="btn btn-outline-primary float-right d-none d-sm-inline-block" value='Unir los seleccionado'/> 
+                <br/>
+                <div id="mensajeUnirFiltro">
+                  {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}                     
+                </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

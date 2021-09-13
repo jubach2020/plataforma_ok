@@ -1,0 +1,91 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="dptoForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="dptoNom">Nombre del Departamento</label>
+                      <input type="text" class="form-control" id="dptoNom" name="dptoNom" placeholder="Nombre departamento">
+                    </div>
+                    <div class="form-group">
+                      <label for="dptoDesc">Descripción</label>
+                      <input type="text" class="form-control" id="dptoDesc" name="dptoDesc" placeholder="Descripción">
+                    </div>
+                  </div>
+                  <!-- /.card-body -->  
+                  <div class="card-footer">
+                    <button type="submit" id="crearDpto" class="btn btn-primary float-right d-none d-sm-inline-block">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de departamentos</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="listadoDptos" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Editar</th>
+                <th>Eliminar</th>           
+              </tr>
+              </thead>
+              <tbody>
+              {% for dpto in departamentos %}
+              <tr>
+                <td><input type="text" class="form-control" id="dptoNom{{ dpto.idDepartamento }}" name="dptoNom{{ dpto.idDepartamento }}" placeholder="Nombre" value="{{ dpto.nombre }}"></td>
+                <td><input type="text" class="form-control" id="dptoDesc{{ dpto.idDepartamento }}" name="dptoDesc{{ dpto.idDepartamento }}" placeholder="Nombre" value="{{ dpto.descripcion }}"></td>
+                <td>
+                  <div class="divEditarUsuario">
+                    <input type='button' name='editarDpto' id='{{ dpto.idDepartamento }}'  class='btn btn-outline-primary' value='Editar'/> 
+                    <br/><div  id='edicionMsgDpto{{ dpto.idDepartamento }}' ><p></p></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="divBorrarUsuario">
+                    <input type='button' name='borrarDpto' id='{{ dpto.idDepartamento }}'  class='btn btn-outline-danger' value='Eliminar'/> 
+                  </div>
+              </td>                
+              </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Editar</th>
+                <th>Eliminar</th> 
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

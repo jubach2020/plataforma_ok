@@ -1,0 +1,173 @@
+{% block content %}    
+<!-- Main content --> 
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+            <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="incForm">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-7">                      
+                                    <label for="selectInc">Incentivos 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <select class="select"  id="selectIncCuota" name="selectInc" style="width: 40%;">
+                                            <option value="0">Seleccione una opción</option>
+                                            <option value="nuevo">+</option>
+                                            {% for inc in incentivos %}
+                                                <option value="{{ inc.id }}">{{ inc.importe }}</option>
+                                            {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-5">    
+                                    <div id="divAddInc"> </div>
+                                </div>
+                            </div> 
+                            <br/>
+                            <div class="row">
+                              <div class="col-md-7">                      
+                                  <label for="selectInc2">Incentivos 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                      <select class="select"  id="selectIncCuota2" name="selectInc2" style="width: 40%;">
+                                          <option value="0">Seleccione una opción</option>
+                                         
+                                          {% for inc in incentivos %}
+                                              <option value="{{ inc.id }}">{{ inc.importe }}</option>
+                                          {% endfor %}
+                                  </select>
+                              </div>
+                              <div class="col-md-5">    
+                                  &nbsp;
+                              </div>
+                          </div> 
+                        </div>  
+                    </div>  
+                </form> 
+                <form enctype="multipart/form-data" method="POST" action="/uploadIncentivosArtsExcel">
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class=flashes>
+                          {% for message in messages %}
+                            <li>{{ message }}</li>
+                          {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endwith %}                     
+                      </div>    
+                      <div class="col-2">
+                          <input type='file'   id ="cargarIncentivosArt" name="cargarIncentivosArt" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>                
+                </form>
+                <div class="col-1">
+                    <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-arts-incentivos">Descargar</a>  
+                </div>          
+
+
+            </div>
+        </div>
+    </div>
+</section>
+  
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de artículos</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="table-responsive" id="mydatatable-container">
+             <table id="listadoArt" class="display" style="width:auto;" role="grid">
+              <thead>
+                <tr>
+                  <th>CN</th>               
+                  <th>Descripción</th>
+                  <th>Cod. Lab</th>  
+                  <th>Cod. Flia BI</th>
+                  <th>Descripción Familia</th> 
+                  <th>C1</th>
+                  <th>C2</th>  
+                  <th>C3</th>
+                  <th>C4</th>            
+                  <th>Asignar</th>           
+                  </tr>
+                </thead>
+              <tfoot>
+                <tr>
+                  <th id="cnFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th id="labFiltro">Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>                            
+                  <th id="sinFiltro">&nbsp;</th>  
+                </tr>
+                </tfoot>
+              <tbody>
+              {% for row in articulos:  %}
+              <tr id="{{ row[0] }}">
+                <td id="artCnn{{ row[0] }}" >{{ row[0] }}</td>
+                <td id="artDesc{{ row[0] }}">{{ row[1] }}</td>
+                <td id="artCodLab{{ row[0] }}">{{ row[2] }}</td>
+                <td id="artFliaBi{{ row[0] }}">{{ row[3] }}</td>
+                <td id="artDescFlia{{ row[0] }}">{{ row[4] }}</td>
+                <td id="artDescFlia{{ row[0] }}">{{ row[5] }}</td>
+                <td id="artC2{{ row[0] }}">{{ row[6] }}</td>
+                <td id="artC3{{ row[0] }}">{{ row[7] }}</td>
+                <td id="artC4{{ row[0] }}">{{ row[8] }}</td>
+                <td ><div class="divAgregar">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked1" id="{{ row[0] }}"/>
+                          <input class="form-check-input" type="hidden"   name="flexSwitchCheckChecked" value="{{ row[0] }}"/>
+                          <label class="form-check-label" for="flexSwitchCheckChecked">Asignar</label>
+                        </div>
+                       
+                     </div>
+                </td>
+               </tr>
+              {% endfor %}
+              </tbody>              
+            </table>  
+            </div>          
+            <div class="card-footer">
+                <input type='button' id ="unir" name="unirArtInc" class="btn btn-outline-primary float-right d-none d-sm-inline-block" value='Asignarle el Incentivo'/> 
+                <br/>
+                <div id="mensajeUnir"></div>
+                <div class="row">
+                  <div class="col-8" id="mensajeAgregarInc">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      <ul class=flashes>
+                      {% for message in messages %}
+                        <li>{{ message }}</li>
+                      {% endfor %}
+                      </ul>
+                    {% endif %}
+                  {% endwith %}                     
+                </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

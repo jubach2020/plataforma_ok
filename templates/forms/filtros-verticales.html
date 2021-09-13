@@ -1,0 +1,197 @@
+{% block content %}    
+<!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!-- form start -->
+                <form action="" method="post" role="form" id="agrupForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                    <div class="row">
+                     <div class="col-md-7">                      
+                        <h3 class="card-title">Farmacias Verticales</h3>                              
+                      </div>
+                      <div class="col-md-5">    
+                        <div id="divAddAgr"> </div>
+                      </div>
+                    </div>                   
+                  </div>
+                </form>
+               
+                <div class="card-footer">
+                   <form enctype="multipart/form-data" method="POST" action="/uploadFiltrosVert">
+                     <div class="row">
+                      <div class="col-8" id="mensajeUpload">
+                        {% with messages_files = get_flashed_messages() %}
+                          {% if messages_files %}
+                            <ul class=flashes>
+                            {% for message in messages_files %}
+                              <li>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                          {% endif %}
+                        {% endwith %}                     
+                      </div>    
+                      <div class="col-2">
+                          <input type='file'   id ="cargarFiltrosVert" name="cargarFiltrosVert" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                      </div>
+                      <div class="col-1">
+                          <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                      </div>   
+                      <div class="col-1">
+                        <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-files-filtros-vert">Descargar</a>  
+                    </div>  
+                    </div>            
+                  </form>                  
+                </div>                         
+            </div>
+         </div>
+       </div>
+     </div>       
+</section>
+<section class="content"> 
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">              
+                <h3 class="card-title">Farmacias Verticales</h3>                
+            </div>
+            <div class="card-body">
+              <div class="table-responsive" id="mydatatableFar-container">
+              <!--<table id="listadoFiltros" class="records_list table table-striped table-bordered table-hover dataTable" style="width:100%;" role="grid">-->
+              <table id="" class="display"  style="width:100%;" role="grid">
+                <thead>
+                  <tr>
+                    <th>NIF</th>               
+                    <th>Id Unidad</th>
+                    <th>Farmacia</th>  
+                    <th>Acciones</th>                           
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Filtro..</th>
+                    <th>Filtro..</th>
+                    <th>Filtro..</th>                  
+                    <th id="sinFiltroFarVer">&nbsp;</th>  
+                  </tr>
+                </tfoot>
+               <tbody>
+                     {% for row in verticalesAgregadas:  %}                       
+                      <tr id="{{ row[0] }}">
+                        <td id="nif{{ row[0] }}" >{{ row[0] }}</td>
+                        <td id="idUnit{{ row[1] }}">{{ row[1] }}</td>
+                        <td id="farm{{ row[2] }}">{{ row[2] }}</td>               
+                        <td id="{{ row[0] }}">
+                          <div class="divBorrarFar">
+                            <input type='button' name='borrarFar' id='{{ row[0] }}'  class='btn btn-outline-danger' value='Borrar'/> 
+                          </div>                          
+                        </td>
+                      </tr>
+                      
+                      {% endfor %}
+                </tbody>              
+              </table>  
+            </div>
+            </div>          
+            <div class="card-footer">
+             &nbsp;
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+   <!-- /.container-fluid -->
+</section>
+
+
+<section class="content"> 
+<div class="container-fluid">
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+     <div class="card-header">
+       <h3 class="card-title">Agregar Farmacias</h3>                
+     </div>
+     <div class="card-body">
+      <div class="table-responsive" id="mydatatableFar-container">
+      <!--<table id="listadoFiltros" class="records_list table table-striped table-bordered table-hover dataTable" style="width:100%;" role="grid">-->
+        <table id="" class="display"  style="width:100%;" role="grid">
+        <thead>
+          <tr>
+            <th>NIF</th>               
+            <th>Id Unidad</th>
+            <th>Farmacia</th>  
+            <th>Grupo</th>  
+              <th>Sel. Todos<br/>
+                <div class="form-check form-switch">
+                  <input type="checkbox" id="select_all" class="form-check-input" />
+                </div>
+              </th>  
+                    
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Filtro..</th>
+              <th>Filtro..</th>
+              <th>Filtro..</th>
+              <th>Filtro..</th>  
+              <th id="sinFiltroFar">&nbsp;</th>  
+            </tr>
+          </tfoot>
+        <tbody>
+               {% for row in filtrosVert:  %}
+                 
+                <tr id="{{ row[0] }}">
+                  <td id="nifFar{{ row[0] }}" >{{ row[0] }}</td>
+                  <td id="idUnitFar{{ row[1] }}">{{ row[1] }}</td>
+                  <td id="farmacia{{ row[2] }}">{{ row[2] }}</td>     
+                  <td id="grupo{{ row[3] }}">{{ row[3] }}</td>           
+                  <td ><div class="divAgregarFar"> <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked" id="checkFar{{ row[0] }}"/>
+                          <label class="form-check-label" for="flexSwitchCheckChecked">Agregar</label>
+                        </div>
+                    </div>
+                  </td>
+                </tr>
+                
+                {% endfor %}
+        </tbody>              
+      </table>  
+      </div>          
+      <div class="card-footer">
+          <input type='button' id ="unirFar" name="unirFar" class="btn btn-outline-primary float-right d-none d-sm-inline-block" value='Agregar lo seleccionado'/> 
+          <br/>
+          <div id="mensajeUnirFar">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}                     
+          </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /.container-fluid -->
+</section>
+
+
+{% endblock content %}

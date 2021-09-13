@@ -1,0 +1,156 @@
+{% block content %}    
+
+      <!-- Main content -->
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <!--<div class="card-header">
+                  <h3 class="card-title">{ titulo } { subtitulo }</h3>
+                </div>-->
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form action="" method="post" role="form" id="empForm">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="empNom">Nombre</label>
+                      <input type="text" class="form-control" id="empNom" name="empNom" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                      <label for="nomUsuario">Nombre de usuario</label>
+                      <input type="text" class="form-control" id="nomUsuario" name="nomUsuario" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="empMail">Email</label>
+                        <input type="email" class="form-control" id="empMail" name="empMail" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="empPass">Password</label>
+                        <input type="password" class="form-control" id="empPass" name="empPass" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="empPass2">Repetir Password</label>
+                        <input type="password" class="form-control" id="empPass2" name="empPass2" placeholder="Repetir Password">
+                        <div class="registrationFormAlert" style="color:rgb(243, 87, 59);" id="CheckPasswordMatch"></div>
+                    </div>                    
+                    <div class="form-group">
+                      <label for="empRol">Rol</label>
+                      <!--<input type="text" class="form-control" id="empRol" name="empRol" placeholder="Rol">-->
+                         <select class="form-control select2" id="empRol" name="empRol" style="width: 100%;">
+                          <option selected value=0>Sin Rol Asignado</option>
+                           
+                            {% for rol in roles %}
+                             <option value="{{ rol.id_role }}">{{ rol.rol }}</option>
+                           {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="empDpto">Departamento</label>
+                          <select class="form-control select2" id="empDpto" name="empDpto" style="width: 100%;">
+                            
+                            {% for dpto in departamentos %}
+                             <option value="{{ dpto.idDepartamento }}">{{ dpto.nombre }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                   </div>
+                  <!-- /.card-body -->
+                    <div class="card-footer">
+                    <button type="submit" id="submitEmp" class="btn btn-primary float-right d-none d-sm-inline-block">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de empleados</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="listaUsuarios" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Nombre de Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Depto</th>
+                <th>Editar</th>
+                <th>Eliminar</th>           
+              </tr>
+              </thead>
+              <tbody>
+              {% for emp in usuarios %}
+              <tr>
+                <td><input type="text" class="form-control" id="empNom{{ emp.idUsuario }}"  name="empNom{{ emp.idUsuario }}"  placeholder="Nombre" value="{{ emp.nombre }}"></td>
+                <td><input type="text" class="form-control" id="nomUsuario{{ emp.idUsuario }}" name="nomUsuario{{ emp.idUsuario }}"   placeholder="Nombre Usuario" value="{{ emp.nombreUsuario }}"></td>
+                <td><input type="text" class="form-control" id="empMail{{ emp.idUsuario }}"  name ="nomUsuario{{ emp.idUsuario }}" placeholder="Email" value="{{ emp.email }}"></td>
+                <td> <select class="form-control select2" id="empRol{{ emp.idUsuario }}" name="empRol" style="width: 100%;">
+                  {% for rol in roles %}
+                      {% if rol.id_role==emp.idRol  %} 
+                        <option selected value="{{ rol.id_role }}">{{ rol.rol }}</option>
+                      {% else  %} 
+                      <option value="{{ rol.id_role }}">{{ rol.rol }}</option>
+                      {% endif %}
+                  {% endfor %}               
+                    </select>
+                </td>
+                <td> <select class="form-control select2" id="empDpto{{ emp.idUsuario }}" name="empDpto" style="width: 100%;">
+                
+                  {% for dpto in departamentos %}
+                       {% if dpto.idDepartamento==emp.idDpto  %} 
+                          <option selected value="{{ dpto.idDepartamento }}">{{ dpto.nombre }}</option>
+                       {% else  %} 
+                          <option value="{{ dpto.idDepartamento }}">{{ dpto.nombre }}</option>
+                       {% endif %}
+                  {% endfor %}
+                    </select>
+                </td>
+                <td>
+                  <div class="divEditarUsuario">
+                    <input type='button' name='editarEmpleado' id='{{ emp.idUsuario }}'  class='btn btn-outline-primary' value='Editar'/> 
+                    <br/><div  id='edicionMsgEmp{{ emp.idUsuario }}' ><p></p></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="divBorrarUsuario"></div>
+                    <input type='button' name='borrarEmp' id='{{ emp.idUsuario }}'  class='btn btn-outline-danger' value='Eliminar'/> 
+                  </div>
+              </td>                
+              </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+              <tr>
+                <th>Nombre</th>
+                <th>Nombre de Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Depto</th>
+                <th>Editar</th>
+                <th>Eliminar</th>      
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endblock content %}

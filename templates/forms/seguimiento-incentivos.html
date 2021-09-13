@@ -1,0 +1,128 @@
+{% block content %}    
+<!-- Main content -->
+<div id="tablaSegInc">
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <!-- general form elements -->
+           
+              <div class="card card-primary">
+                <!-- form start -->
+                 <div class="card-body">
+                       <div class="row">
+                         <div class="col-md-5">                             
+                          <form action="" method="post" role="form" id="incenForm">
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-5">                         
+                                  <label for="incenImporte">Diferenecia porcentual de cuota (%) </label>                         
+                                </div>
+                                <div class="col-4">    
+                                  <input id="porcentCuota" type="text" name="porcentCuota" class="form-control" />
+                                </div> 
+                                <div class="col-2"> <input  type="button"  name="calcularPorcen" id='calcularPorcen' class="btn btn-outline-primary" value="Calcular" /> </div>                               
+                             </div>
+                          </form>
+                        </div>
+                      <!--</form>-->
+                    </div>                   
+                  </div>
+                  <!-- /.card-body -->  
+                  <div class="card-footer">
+                    <input  type="button"  name="pdfCuotas" id='pdfCuotas' class="btn btn-outline-primary" value="Descargar PDF" />
+                  </div>                
+              </div>
+          
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="tablaCuotasId" class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+    
+        <div class="card card-primary">
+          <!-- form start -->
+           <div class="card-body">
+            <!--<div class="table-wrapper">-->
+              {% if largoTh > 3 %}  
+              <div id="tablaSegInc">
+              <table id="listadoSegCuotas"  style="width:100%;" class="display table-responsive table-bordered table-wrapper">
+                <thead>
+                      <tr>
+                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th colspan="4" class="table-active">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        {% for item in headList%}
+                            <th colspan="6" style="font-size:90%; text-align: center;"  class="table-active">{{ item }}</th>                       
+                        {% endfor %}                 
+                      </tr>                           
+                      <tr>
+                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>                     
+                        {% for item in (encabezadosArray) %}
+                          {% if loop.index <= largoTotal %}                         
+                            {% if item|length == 3 %}
+                                <th class="table-active" style="font-size:90%; text-align: center">{{ item[1] }}</th> 
+                            {% elif item|length == 4 %}
+                                <th class="table-active" style="font-size:70%; text-align: center">{{ item[2] }}</th> 
+                            {% elif item|length == 5 %}
+                                <th class="table-active" style="font-size:70%; text-align: center">{{ item[2] }}</th> 
+                                <th class="table-active" style="font-size:70%; text-align: center">{{ item[3] }}</th> 
+                            {% endif %}
+                          {% endif %}   
+                        {% endfor %} 
+                    </tr>                           
+                    </thead>
+                    <tfoot> 
+                      <tr>   
+                        <th>&nbsp;</th>                                                                         
+                      {% for j in range(largoTotal)  %}           
+                          <th>&nbsp;</th>                                                                                                    
+                      {% endfor %}                      
+                      </tr>
+                   </tfoot>                     
+                  <tbody>                   
+                    {% for k in range(largoTd)  %}                        
+                    <tr>                     
+                       <td>{{ loop.index }}</td>                           
+                       {% for y in range(largoTotal):  %}
+                          {% if (datos[k][y]=="rojo") %}
+                              <td style="text-align: center;"><span class="red">&nbsp;</span></td> 
+                          {% else %}
+                                    {% if (datos[k][y]=="verde") %}
+                                        <td style="text-align: center;"><span class="green">&nbsp;</span></td>   
+                                    {% else %}                                    
+                                            {% if (datos[k][y]=="ambar") %}
+                                                <td style="text-align: center;"><span class="yellow">&nbsp;</span></td>  
+                                            {% else %} 
+                                                 <td style="text-align: center;"> {{ datos[k][y] }} </td> 
+                                            {% endif %} 
+                                    {% endif %} 
+                           {% endif %} 
+                          
+                       {% endfor %}
+                    </tr>                    
+                    {% endfor %}                   
+                  </tbody>              
+                </table> 
+              </div>
+                {% endif %}
+              <!--</div> -->                                    
+            </div>
+            <!-- /.card-body -->  
+            <div class="card-footer">
+          
+            </div>                
+        </div>
+   
+      </div>
+  </div>
+</div>
+</section>
+
+{% endblock content %}

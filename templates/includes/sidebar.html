@@ -1,0 +1,286 @@
+  <!-- Main Sidebar Container -->
+  <!--<aside class="main-sidebar sidebar-light-primary elevation-4">-->
+    <aside class="main-sidebar sidebar-light-primary">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <!--<img src="/static/assets/img/ecoceutics.png" alt="eco Logo" class="brand-image img-circle elevation-3" style="opacity: .8">-->
+      <span class="brand-text font-weight-light">Intranet 2 <BR/> &nbsp;&nbsp;ECOCEUTICS</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <!--<img src="/static/assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">-->
+          <!--<img src="/static/assets/img/{{ current_user.avatar }}" class="img-circle elevation-2" alt="User Image">-->
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">{{ current_user.username }}</a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+        
+          <li class="nav-item has-treeview {% if 'administrador' in segment %} menu-open {% endif %} ">
+            
+            <a href="{{ url_for('auth.home') }}" data-toggle="control-sidebar" class="nav-link {% if 'administrador' in segment %} active {% endif %}">
+              <i class="nav-icon fas fa-users-cog"></i>
+              <p>                 
+                Administrador
+                <i class="right fas fa-angle-left"></i>            
+              </p>
+            </a> 
+          
+               <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url_for('main.departamentos') }}" data-toggle="control-sidebar" class="nav-link {% if 'departamentos' in segment %} active fixed {% endif %}">
+                    <i class="far fa-circle  nav-icon"></i>
+                    <p>Departamentos</p>
+                  </a>                  
+                </li>
+                <li class="nav-item">
+                  <a href="{{ url_for('main.roles') }}" data-toggle="control-sidebar" class="nav-link {% if 'roles' in segment %} active fixed {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Roles</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ url_for('main.empleados') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active fixed {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Empleados</p>
+                  </a>
+                </li>
+                <!--<li class="nav-item">
+                  <a href="{{ url_for('main.asignacionRoles') }}" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Asignacion de Permisos</p>
+                  </a>
+                </li>-->
+              </ul>
+          </li>            
+            <!--------------------------------------------------------------------------------------------------------------------->
+          <li class="nav-item has-treeview {% if 'operaciones' in segment %} menu-open {% endif %} ">
+              <a href="{{ url_for('auth.home') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                <i class="nav-icon fas fa-tools"></i>
+                <p>                 
+                  Operaciones
+                  <i class="right fas fa-angle-left"></i>            
+                </p>
+              </a>   
+              <ul class="nav nav-treeview">
+                <li class="nav-item has-treeview">
+                  <a href="#" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Mantenimientos</p>
+                    <i class="right fas fa-angle-left"></i>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{{ url_for('main.agrupaciones') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Agrupaciones</p>
+                      </a>
+                    </li> 
+                    <li class="nav-item">
+                        <a href="{{ url_for('main.agrupArticulos') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                          <i class="far fa-circle"></i>
+                          <p>Agrupación de artículos</p>
+                        </a>          
+                    </li>  
+                        
+                    
+                    <li class="nav-item">
+                      <a href="{{ url_for('main.filtros') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Filtros</p>
+                      </a>
+                    </li> 
+                    <li class="nav-item">
+                        <a href="{{ url_for('main.filtrosArticulos') }}" data-toggle="control-sidebar"class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                          <i class="far fa-circle"></i>
+                          <p>Filtros de artículos</p>
+                        </a>          
+                    </li> 
+                    <li class="nav-item">
+                      <a href="{{ url_for('main.filtrosVerticales') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Filtros Verticales</p>
+                      </a>
+                    </li>       
+                 
+                    <li class="nav-item">
+                      <a href="{{ url_for('main.laboratoriosVerticales') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Laboratorios Verticales</p>
+                      </a>
+                    </li> 
+                    <li class="nav-item">
+                      <a href="{{ url_for('main.incentivosAnalisis') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Incentivos</p>
+                      </a>
+                    </li>                
+                  </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                  <a href="#" data-toggle="control-sidebar"class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Trabajos</p>
+                    <i class="right fas fa-angle-left"></i>
+                  </a>
+                  <ul class="nav nav-treeview">
+                     <!--<li class="nav-item">
+                      <a href="{{ url_for('main.asignacionFarmaciasArt') }}" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Asignacion Fcias-Articulos</p>
+                      </a>    
+                     </li>-->
+                     <li class="nav-item">
+                      <a href="{{ url_for('main.asignacionCuotas') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Asignacion Cuotas</p>
+                      </a>    
+                     </li>
+                     <li class="nav-item">
+                      <a href="{{ url_for('main.artsIncentivos') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                        <i class="far fa-circle"></i>
+                        <p>Asignación Incentivos-Arts.</p>
+                      </a>          
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Farmacias Verticales</p>
+                          <i class="right fas fa-angle-left"></i>
+                        </a>                    
+                       <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.farmaciasVerticales') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Mínimos / Máximos</p>
+                            </a>          
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="nav-item has-treeview">
+                        <a href="#" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Artículos Verticales</p>
+                          <i class="right fas fa-angle-left"></i>
+                        </a>                    
+                       <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.articulosVerticales') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Mínimos / Máximos</p>
+                            </a>          
+                          </li>
+                        </ul>
+                      </li>
+
+
+                      <li class="nav-item has-treeview">
+                        <a href="#" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Ejecuciones</p>
+                          <i class="right fas fa-angle-left"></i>
+                        </a>                    
+                       <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.ejecucionesMinMax') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Mínimos / Máximos</p>
+                            </a>          
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.sinonimos') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Sinónimos</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.programacionFarmatic') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Programación Farmatic</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{ url_for('main.envioMensajes') }}" data-toggle="control-sidebar" class="nav-link {% if 'index.html' in segment %} active {% endif %}">
+                              <i class="far fa-circle"></i>
+                              <p>Envío de mensajes</p>
+                            </a>
+                          </li>
+                       </ul>
+                      </li>
+                  </ul>
+                </li> 
+                <li class="nav-item has-treeview">
+                  <a href="#" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon"></i>
+                      <p>Análisis</p>
+                    <i class="right fas fa-angle-left"></i>
+                  </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="{{ url_for('main.necesidadesFcias') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                            <i class="far fa-circle"></i>
+                          <p>Necesidades Farmacias</p>
+                          </a>    
+                        </li>
+                        <li class="nav-item">
+                          <a href="{{ url_for('main.necesidadesFiltros') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                            <i class="far fa-circle"></i>
+                            <p>Necesidades Farmacias (Filtrado)</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="{{ url_for('main.articulosVerticalesAnalisis') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                            <i class="far fa-circle"></i>
+                            <p>Artículos Verticales</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="{{ url_for('main.laboratoriosVerticalesAnalisis') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                            <i class="far fa-circle"></i>
+                            <p>Laboratorios Verticales</p>
+                          </a>
+                        </li>  
+                          
+                        <li class="nav-item">
+                          <a href="{{ url_for('main.segIncentivosAnalisis') }}" data-toggle="control-sidebar" class="nav-link {% if 'operaciones' in segment %} active {% endif %}">
+                            <i class="far fa-circle"></i>
+                            <p>Seguimiento incentivos</p>
+                          </a>
+                        </li>           
+                                                  
+                    </ul>
+                </li>               
+              </ul>
+            </li>              
+        </ul>
+
+
+
+            <!--------------------------------------------------------------------------------------------------------------------->
+           
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+  <div class="control-sidebar-bg"></div>

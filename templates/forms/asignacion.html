@@ -1,0 +1,58 @@
+     <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+        <form action="" method="post" role="form" id="asignRolesForm">
+          <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">Asignación de Permisos</h3>
+  
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Empleados</label>
+                    <select class="form-control select2" id="selectEmp" name="selectEmp" style="width: 100%;">
+                        {% for emp in empleados %}
+                           <option value="{{ emp.idUsuario }}">{{ emp.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="form-group">
+                    
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Permisos</label>
+                    <select class="select2"  id="selectRol" name="selectRol" data-placeholder="Selectiona un rol" style="width: 100%;">
+                        {% for rol in roles %}
+                          <option value="{{ rol.idRol }}">{{ rol.role }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <!-- /.form-group -->
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary float-right d-none d-sm-inline-block">Submit</button>
+                  </div>
+                </form>
+                  <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+        </div>
+</section>

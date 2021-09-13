@@ -1,0 +1,281 @@
+{% block content %}    
+<!-- Main content -->
+<section class="content">
+  <form action="" method="post" role="form" id="cuotasForm">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <!-- form start -->  
+            <div class="card-header">
+              <h3 class="card-title">Asignaciones de incentivos y cuotas</h3>
+            </div>          
+                <div class="card-body">
+                    <div class="form-group">
+                      <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">                      
+                                <label for="selectFar">Farmacia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <select class="select"  id="selectFar" name="selectFar" style="width: 50%;">
+                                    <option value="0">Seleccionar Farmacia</option>
+                                    <option value="todasFar">*</option>
+                                    {% for far in farmacias %}
+                                    <option value="{{ far.idUnit }}">{{ far.Farmacia }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">                      
+                                <label for="select">Laboratorio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <select class="select"  id="selectLab" name="selectLab" style="width: 50%;">
+                                    <option value="0">Seleccionar Laboratorio</option>
+                                    <option value="todosLab">*</option>
+                                    {% for lab in laboratorios %}
+                                        <option value="{{ lab.Codigo }}">{{ lab.Nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>                          
+                        </div> 
+                        <div class="row">
+                          <div class="col-md-4">                          
+                              <a class="link-info" href="/download-listado-farmacias">Listado Farmacias</a>  
+                          </div>
+                          <div class="col-md-3">                         
+                              <a class="link-info" href="/download-listado-lab">Listado Laboratorios</a>  
+                          </div>
+                          <div class="col-md-4">
+                            &nbsp;                         
+                          </div>
+                        </div> 
+                      </div>                                       
+                    </div>
+                </div> 
+            </div>                           
+        </div>
+    </div>
+</div>
+</section>
+     <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+              <div class="card">              
+                    <div class="card-body">
+                        <div class="form-group">                       
+                            <div class="row">
+                                <div class="col-md-2">                      
+                                    <label for="cuota">Cuota (%) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="text" id="cuota" name="cuota"  />
+                                </div>
+                                <div class="col-md-3">                      
+                                  <label for="cuota">Cuota Dos (%) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                 <input type="text" id="cuotaDos" name="cuotaDos"  />                                  
+                                </div>
+                                <div class="col-md-2">                      
+                                  <label for="base">Agr. Base&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                  <input type="text" id="base" name="base"  />
+                                </div>
+                                <div class="col-md-3">                      
+                                  <label for="total">Agr. Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                  <input type="text" id="total" name="total"   />
+                                </div>
+                                <div class="col-md-2">     
+                                    <div id="divAddInc"> </div>
+                                </div>
+                            </div>                   
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                      <div class="container">
+                       <div class="row">
+                          <div class="col-md-8"> 
+                            &nbsp;
+                          </div>
+                          <div class="col-md-2">
+                            <input type="submit" name="asignarCuota" class="btn btn-primary float-right d-none d-sm-inline-block" value="Asignar Cuota" />
+                          </div>
+                          <div class="col-md-2">
+                            <input type="button" name="borrarAsigCuota"  class="btn btn-danger float-right d-none d-sm-inline-block"  value="Borrar Cuota" />
+                          </div>
+                        </div>
+                       </div>
+                     </div>          
+                  </form>
+                  <div class="card-footer">
+                    <form enctype="multipart/form-data" method="POST" action="/uploadCuotas">
+                       <div class="row">
+                          <div class="col-8" id="mensajeUpload">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                              <ul class=flashes>
+                              {% for message in messages %}
+                                <li>{{ message }}</li>
+                              {% endfor %}
+                              </ul>
+                            {% endif %}
+                          {% endwith %}                     
+                          </div>
+                          <div class="col-2">
+                              <input type='file'   id ="cargarCuotas" name="cargarCuotas" class="btn btn-outline-primary float-right d-none d-sm-inline-block"/>
+                          </div>
+                          <div class="col-1">
+                              <button type="submit" name="submitFileUpload" class="btn btn-outline-primary float-right d-none d-sm-inline-block">Subir</button>
+                          </div>            
+                          <div class="col-1">
+                            <a class="btn btn-outline-default float-right d-none d-sm-inline-block" href="/download-files-cuotas">Descargar</a>  
+                          </div>
+                        </div>                
+                    </form>
+                  </div>                               
+            </div>
+        </div>
+      </div> 
+</section>
+<form action="/operaciones/trabajos/asignacion-cuotas/editar" method="post" role="form" id="modalCuotasForm">
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Listado de Farmacias Verticales</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="table-responsive" id="listadoAsignacionCuotas-container">
+              <table id="listadoAsignacionCuotas" style="width:auto;" role="grid">
+                <thead>
+                <tr>
+                  <th>Farmacia</th>
+                  <th>Laboratorio</th>
+                  <th>Cuota (%)</th>
+                  <th>Cuota Dos(%)</th>
+                  <th>Agr.Base</th>
+                  <th>Agr.Total</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>           
+                </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th>Filtro..</th>
+                  <th id="sinFiltro" colspan="2">&nbsp;</th>   
+                  </tr>
+              </tfoot>
+                <tbody>
+                {% for asig in asignaciones %}
+                <tr>
+                  <td>{{ asig.farmacia }}
+                      <!--<input type="text" class="form-control" id="far{{ asig.id }}"   name="far{{ asig.id }}"    value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" \>
+                      <input type="hidden" class="form-control" id="farHidden{{ asig.id }}"   name="farHidden{{ asig.id }}"    value="{{ asig.idUnit }}"\>-->
+                  </td>
+                  <td>{{ asig.Nombre }}
+                     <!--<input type="text" class="form-control" id="lab{{ asig.id  }}"  name="lab{{ asig.id  }}"   value="{{ asig.Nombre }}" style="text-transform:uppercase;"  onkeyup="javascript:this.value=this.value.toUpperCase();" \>
+                      <input type="hidden" class="form-control" id="labHidden{{ asig.id  }}"  name="labHidden{{ asig.id  }}"   value="{{ asig.idLab }}"\>-->
+                  </td>
+                  <td>{{ asig.cuota }}
+                    <!--<input type="text" class="form-control" id="cuota{{ asig.id }}" name="cuota{{ asig.id }}"  value="{{ asig.cuota }}"\>-->
+                  </td>
+                  <td>{{ asig.cuotaDos }}
+                    <!--<input type="text" class="form-control" id="cuota{{ asig.id }}" name="cuota{{ asig.id }}"  value="{{ asig.cuota }}"\>-->
+                  </td>
+                  <td>{{ asig.base }}
+                      <!--<input type="text" class="form-control" id="base{{ asig.id }}"  name="base{{ asig.id }}"   value="{{ asig.base }}"\>-->
+                  </td>
+                  <td>{{ asig.total }}
+                    <!--<input type="text" class="form-control" id="total{{ asig.id }}"   name="total{{ asig.id }}"   value="{{ asig.total }}"\>-->
+                  </td>
+                  <td>
+                    <div class="divEditarAsignacion">
+                      <input type='button' id='editarAsigCuota{{ asig.id }}'   class='btn btn-outline-primary' value='Editar' data-toggle="modal" data-target="#agregarCuotaVer{{ asig.id }}"/>                   
+                      <br/><div  id='editarMsgInc{{ asig.id }}' ><p></p></div>
+                    </div>
+                   
+                    <div id="agregarCuotaVer{{ asig.id }}" class="modal fade" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                       <div class="modal-content">
+                            <div class="modal-header">
+                            <h4 class="modal-title">Ingresar datos</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            </div>
+                          <div>
+                            <table id="datosLaboratorio" class="records_list table table-bordered"  style="width:auto;" role="grid">
+                              <thead>
+                                <tr>
+                                  <tr>
+                                    <th>Farmacia</th>
+                                    <th>Laboratorio</th>
+                                    <th>Cuota (%)</th>
+                                    <th>Cuota Dos(%)</th>
+                                    <th>Agr.Base</th>
+                                    <th>Agr.Total</th>                                                                    
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                   <td>
+                                      <input type="text" class="form-control" id="far{{ asig.id }}"   name="far{{ asig.id }}"    value="{{ asig.farmacia }}" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" \>
+                                      <input type="hidden" class="form-control" id="farHidden{{ asig.id }}"   name="farHidden{{ asig.id }}"    value="{{ asig.idUnit }}"\>
+                                   </td>
+                                   <td>
+                                     <input type="text" class="form-control" id="lab{{ asig.id  }}"  name="lab{{ asig.id  }}"   value="{{ asig.Nombre }}" style="text-transform:uppercase;"  onkeyup="javascript:this.value=this.value.toUpperCase();" \>
+                                     <input type="hidden" class="form-control" id="labHidden{{ asig.id  }}"  name="labHidden{{ asig.id  }}"   value="{{ asig.idLab }}"\>
+                                   </td>
+                                   <td><input type="text" class="form-control" id="cuota{{ asig.id }}" name="cuota{{ asig.id }}"  value="{{ asig.cuota }}"\></td>
+                                   <td><input type="text" class="form-control" id="cuotaDos{{ asig.id }}" name="cuotaDos{{ asig.id }}"  value="{{ asig.cuotaDos }}"\></td>
+                                   <td>
+                                      <input type="text" class="form-control" id="base{{ asig.id }}"  name="base{{ asig.id }}"   value="{{ asig.base }}"\>
+                                   </td>
+                                   <td>
+                                    <input type="text" class="form-control" id="total{{ asig.id }}"   name="total{{ asig.id }}"   value="{{ asig.total }}"\>
+                                   </td>                               
+                                </tr> 
+                              </tbody>  
+                            </table>
+                          </div>
+                         <div class="modal-footer">
+                             <input  type="hidden" name="hiddenClose" value="{{ asig.id }}" />
+                             <input  type="button" name="botonClose" class="btn btn-default" data-dismiss="modal" value="Close" />
+                             <input  type="hidden" name="idEditar"   value="{{ asig.id }}" />
+                             <input  type="submit" name="editarAsig"  class="editar btn btn-primary"/>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->                    
+                  </td>
+                  <td>
+                    <div class="divBorrarAsignacion">
+                      <input type='button' name='borrarAsig' id='{{ asig.id }}'  class='btn btn-outline-danger' value='Eliminar'/> 
+                      <br/><div  id='borraMsgInc{{ asig.id }}' ><p></p></div>
+                    </div>
+                  </td>                
+                </tr>               
+                {% endfor %}
+                </tbody>                
+               </table>
+               </div>
+            <div class="card-footer">
+               &nbsp;
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+</form>
+
+
+{% endblock content %}
